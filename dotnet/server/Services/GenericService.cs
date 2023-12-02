@@ -50,6 +50,7 @@ namespace server.Services
 
         public override Task<Generic.V1.GetDynamicDataResponse> GetDynamicData(Generic.V1.GetDynamicDataRequest request, ServerCallContext context)
         {
+            _logger.LogInformation("Received dynamic data request: requestId={req}", request.RequestId);
             return Task.FromResult(new Generic.V1.GetDynamicDataResponse
             {
                 OriginalRequestId = request.RequestId,

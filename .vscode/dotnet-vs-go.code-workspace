@@ -1,0 +1,36 @@
+{
+	"folders": [
+		{
+			"name": "dotnet",
+			"path": "../dotnet"
+		},
+		{
+			"path": "../connect"
+		},
+		{
+			"path": "../k6"
+		},
+		{
+			"path": "../proto"
+		},
+		{
+			"name": "root",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"conventionalCommits.scopes": [
+			"connect",
+			"dotnet",
+			"k6"
+		]
+	},
+	"extensions": {
+		"recommendations": [
+			"vivaxy.vscode-conventional-commits",
+			"golang.go",
+			"ms-dotnettools.csdevkit",
+			"bufbuild.vscode-buf",
+		]
+	}
+}
