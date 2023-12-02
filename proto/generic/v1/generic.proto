@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package generic.v1;
+
+import "google/protobuf/empty.proto";
+
+service GenericService {
+  // RPC Which always returns the same data (so can be cached)
+  rpc GetStaticData (google.protobuf.Empty) returns (GetStaticDataResponse) {}
+  // RPC Which returns data which is unique to the request (so cannot be cached)
+  rpc GetDynamicData (GetDynamicDataRequest) returns (GetDynamicDataResponse) {}
+}
+
+message Content {
+  string id = 1;
+  string name = 2;
+  ContentType content_type = 3;
+  enum ContentType {
+    TEXT = 0;
+    IMAGE = 1;
+    VIDEO = 2;
+  }
+
+  string content = 4;
+}
+
+message GetStaticDataResponse {
+  string name = 1;
+  int32 version = 2;
+  string description = 3;
+  repeated Content content = 4;
+}
+
+message GetDynamicDataRequest {
+  string request_id = 1;
+}
+
+message GetDynamicDataResponse {
+  string original_request_id = 1;
+  string unique_response_id = 2;
+}
