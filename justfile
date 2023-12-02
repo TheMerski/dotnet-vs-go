@@ -23,4 +23,4 @@ run-connect-server:
 
 test-localhost rps=default_rps:
     @cd k6; \
-    k6 run generic.js -e HOSTNAME='localhost:4242' -e MAX_RPS={{rps}}
+    k6 run generic.js -e HOSTNAME='localhost:8080' -e MAX_RPS={{rps}}
