@@ -1,6 +1,27 @@
+using OpenTelemetry;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+builder.Logging.AddOpenTelemetry(options =>
+{
+  options.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("dotnet-server")).AddOtlpExporter();
+});
+builder.Services.AddOpenTelemetry()
+  .ConfigureResource(resource => resource.AddService("dotnet-server"))
+  .WithTracing(tracing => tracing
+    .AddAspNetCoreInstrumentation()
+    .AddOtlpExporter()
+    .AddConsoleExporter())
+  .WithMetrics(metrics => metrics
+    .AddAspNetCoreInstrumentation()
+    .AddOtlpExporter());
 
 // Add services to the container.
 builder.Services.AddGrpc();
