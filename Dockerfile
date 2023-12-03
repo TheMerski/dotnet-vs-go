@@ -13,9 +13,10 @@ RUN apt-get update \
     clang zlib1g-dev
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["server.csproj", "."]
+COPY ["dotnet/server/server.csproj", "."]
 RUN dotnet restore "./././server.csproj"
-COPY . .
+COPY dotnet/server/ .
+COPY proto/ ../../proto
 WORKDIR "/src/."
 RUN dotnet build "./server.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
