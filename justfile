@@ -21,6 +21,11 @@ run-connect-server:
     @cd connect; \
     go run {{github_repo}}/connect/cmd/connect
 
+[no-exit-message]
+run-dotnet-server:
+    @cd dotnet/server; \
+    dotnet run --property:Configuration=Release
+
 test-localhost rps=default_rps:
     @cd k6; \
     k6 run generic.js -e HOSTNAME='localhost:8080' -e MAX_RPS={{rps}}
