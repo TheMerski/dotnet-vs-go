@@ -9,6 +9,7 @@ proto TARGET:
         connect)
             rm -rf connect/internal/gen
             ;;
+        *)
         >&2 echo "invalid target {{TARGET}}"
         exit 1
     esac

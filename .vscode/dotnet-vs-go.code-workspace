@@ -25,7 +25,8 @@
 		"conventionalCommits.scopes": [
 			"connect",
 			"dotnet",
-			"k6"
+			"k6",
+			"proto"
 		],
 		"yaml.schemas": {
 			"file:///Users/merwin/.vscode/extensions/atlassian.atlascode-2.10.12/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml",
