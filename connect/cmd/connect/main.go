@@ -30,6 +30,6 @@ func main() {
 	mux.Handle(grpcreflect.NewHandlerV1Alpha(reflectHandler))
 
 	slog.Info("Starting server on port 8080")
-	http.ListenAndServe("localhost:8080", h2c.NewHandler(mux, &http2.Server{}))
+	http.ListenAndServe(":8080", h2c.NewHandler(mux, &http2.Server{}))
 	slog.Info("Server stopped")
 }
