@@ -8,7 +8,6 @@ on:
       - 'connect/**'
   workflow_dispatch:
 
-
 # There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
   build-and-push-image:
@@ -17,12 +16,16 @@ jobs:
     permissions:
       contents: read
       packages: write
+      # 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
           go-version: '1.21.x'
-      - uses: ko-build/setup-ko@v0.6          
-      - run: ko build --base-import-paths
+      - uses: ko-build/setup-ko@v0.6
+        env:
+          # Specify repo manually to avoid issues with uppercase letters in repo name
+          KO_DOCKER_REPO: ghcr.io/themerski/dotnet-vs-go
+      - run: ko build ./cmd/connect --base-import-paths
         working-directory: ./connect

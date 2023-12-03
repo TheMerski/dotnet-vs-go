@@ -19,7 +19,7 @@ proto-all: (proto 'connect')
 [no-exit-message]
 run-connect-server:
     @cd connect; \
-    go run {{github_repo}}/connect/cmd
+    go run {{github_repo}}/connect/cmd/connect
 
 test-localhost rps=default_rps:
     @cd k6; \
