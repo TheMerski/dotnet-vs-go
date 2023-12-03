@@ -1,0 +1,28 @@
+
+name: Build and Push Connect Container
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'connect/**'
+  workflow_dispatch:
+
+
+# There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.21.x'
+      - uses: ko-build/setup-ko@v0.6          
+      - run: ko build --base-import-paths
+        working-directory: ./connect
