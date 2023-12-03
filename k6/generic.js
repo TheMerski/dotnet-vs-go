@@ -7,7 +7,7 @@ const TOTAL_TEST_TIME_S = parseInt(__ENV.TEST_TIME, 10);
 const QUARTER_TEST_TIME_S = TOTAL_TEST_TIME_S / 4 + 's';
 
 // Allocate more VUs for secure connections
-const VU_PER_RPS = __ENV.INSECURE === 'true' ? 10 : 5;
+const VU_PER_RPS = __ENV.INSECURE === 'true' ? 10 : 2;
 
 let VU_ALLOCATED = parseInt(__ENV.MAX_RPS / VU_PER_RPS, 10);
 if (VU_ALLOCATED < 1) {
