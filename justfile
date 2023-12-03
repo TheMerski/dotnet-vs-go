@@ -30,4 +30,8 @@ run-dotnet-server:
 
 test-localhost rps=default_rps time=default_time:
     @cd k6; \
-    k6 run generic.js -e HOSTNAME='localhost:8080' -e MAX_RPS={{rps}} -e TEST_TIME={{time}}
+    k6 run generic.js -e HOSTNAME='localhost:8080' -e MAX_RPS={{rps}} -e TEST_TIME={{time}} -e INSECURE=true
+
+test hostname rps=default_rps time=default_time:
+    @cd k6; \
+    k6 run generic.js -e HOSTNAME='{{hostname}}' -e MAX_RPS={{rps}} -e TEST_TIME={{time}} -e INSECURE=false

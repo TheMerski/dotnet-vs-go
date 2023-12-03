@@ -6,13 +6,22 @@ import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 const TOTAL_TEST_TIME_S = parseInt(__ENV.TEST_TIME, 10);
 const QUARTER_TEST_TIME_S = TOTAL_TEST_TIME_S / 4 + 's';
 
+// Allocate more VUs for secure connections
+const VU_PER_RPS = __ENV.INSECURE === 'true' ? 10 : 5;
+
+let VU_ALLOCATED = parseInt(__ENV.MAX_RPS / VU_PER_RPS, 10);
+if (VU_ALLOCATED < 1) {
+  // allocate at least 1 VU
+  VU_ALLOCATED = 1;
+}
+
 export const options = {
   scenarios: {
     static_data: {
       executor: 'ramping-arrival-rate',
       startRate: parseInt(__ENV.MAX_RPS / 5, 10),
       timeUnit: '1s',
-      preAllocatedVUs: parseInt(__ENV.MAX_RPS / 10, 10),
+      preAllocatedVUs: VU_ALLOCATED,
       stages: [
         { duration: QUARTER_TEST_TIME_S, target: parseInt(__ENV.MAX_RPS / 2, 10) },
         { duration: QUARTER_TEST_TIME_S, target: parseInt(__ENV.MAX_RPS, 10) },
@@ -25,7 +34,7 @@ export const options = {
       executor: 'ramping-arrival-rate',
       startRate: parseInt(__ENV.MAX_RPS / 20, 10),
       timeUnit: '1s',
-      preAllocatedVUs: parseInt(__ENV.MAX_RPS / 10, 10),
+      preAllocatedVUs: VU_ALLOCATED,
       stages: [
         { duration: QUARTER_TEST_TIME_S, target: parseInt(__ENV.MAX_RPS / 4, 10) },
         { duration: QUARTER_TEST_TIME_S, target: parseInt(__ENV.MAX_RPS / 2, 10) },
@@ -47,7 +56,7 @@ const staticTrend = new Trend('get_static_data', true);
 export function GetDynamicData() {
   let startime = new Date();
   client.connect(__ENV.HOSTNAME, {
-    plaintext: true,
+    plaintext: __ENV.INSECURE === 'true',
   });
   connectionTrend.add(new Date() - startime);
 
@@ -66,7 +75,7 @@ export function GetDynamicData() {
 export function GetStaticData() {
   let startime = new Date();
   client.connect(__ENV.HOSTNAME, {
-    plaintext: true,
+    plaintext: __ENV.INSECURE === 'true',
   });
   connectionTrend.add(new Date() - startime);
 
