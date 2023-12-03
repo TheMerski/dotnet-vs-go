@@ -3,6 +3,9 @@ import { Trend } from 'k6/metrics';
 import grpc from 'k6/net/grpc';
 import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 
+const TOTAL_TEST_TIME_S = parseInt(__ENV.TEST_TIME, 10);
+const QUARTER_TEST_TIME_S = TOTAL_TEST_TIME_S / 4 + 's';
+
 export const options = {
   scenarios: {
     static_data: {
@@ -11,9 +14,10 @@ export const options = {
       timeUnit: '1s',
       preAllocatedVUs: parseInt(__ENV.MAX_RPS / 10, 10),
       stages: [
-        { duration: '20s', target: parseInt(__ENV.MAX_RPS, 10) },
-        { duration: '20s', target: parseInt(__ENV.MAX_RPS / 2, 10) },
-        { duration: '10s', target: 0 },
+        { duration: QUARTER_TEST_TIME_S, target: parseInt(__ENV.MAX_RPS / 2, 10) },
+        { duration: QUARTER_TEST_TIME_S, target: parseInt(__ENV.MAX_RPS, 10) },
+        { duration: QUARTER_TEST_TIME_S, target: parseInt(__ENV.MAX_RPS, 10) },
+        { duration: QUARTER_TEST_TIME_S, target: 0 },
       ],
       exec: 'GetStaticData',
     },
@@ -23,9 +27,10 @@ export const options = {
       timeUnit: '1s',
       preAllocatedVUs: parseInt(__ENV.MAX_RPS / 10, 10),
       stages: [
-        { duration: '20s', target: parseInt(__ENV.MAX_RPS / 2, 10) },
-        { duration: '20s', target: parseInt(__ENV.MAX_RPS, 10) },
-        { duration: '10s', target: 0 },
+        { duration: QUARTER_TEST_TIME_S, target: parseInt(__ENV.MAX_RPS / 4, 10) },
+        { duration: QUARTER_TEST_TIME_S, target: parseInt(__ENV.MAX_RPS / 2, 10) },
+        { duration: QUARTER_TEST_TIME_S, target: parseInt(__ENV.MAX_RPS, 10) },
+        { duration: QUARTER_TEST_TIME_S, target: 0 },
       ],
       exec: 'GetDynamicData',
     },

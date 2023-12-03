@@ -14,9 +14,9 @@ To run the gRPC server locally, you can use the [justfile](https://github.com/ca
     ```bash
     just test-localhost
     ```
-    or by providing an optional rps target with:
+    or by providing an optional rps target and total test time with:
     ```bash
-    just test-localhost {rps}
+    just test-localhost {rps} {time_s}
     ```
 
 ## Contributing

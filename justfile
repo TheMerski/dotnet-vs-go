@@ -1,6 +1,7 @@
 project := "dotnet-vs-go"
 github_repo := "github.com/themerski/" / project 
 default_rps := '250'
+default_time := '60'
 
 
 proto TARGET:
@@ -27,6 +28,6 @@ run-dotnet-server:
     @cd dotnet/server; \
     dotnet run --property:Configuration=Release
 
-test-localhost rps=default_rps:
+test-localhost rps=default_rps time=default_time:
     @cd k6; \
-    k6 run generic.js -e HOSTNAME='localhost:8080' -e MAX_RPS={{rps}}
+    k6 run generic.js -e HOSTNAME='localhost:8080' -e MAX_RPS={{rps}} -e TEST_TIME={{time}}
