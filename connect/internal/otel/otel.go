@@ -110,7 +110,7 @@ func newMeterProvider(ctx context.Context, res *resource.Resource) (*metric.Mete
 		metric.WithResource(res),
 		metric.WithReader(metric.NewPeriodicReader(metricExporter,
 			// Default is 1m. Set to 3s for demonstrative purposes.
-			metric.WithInterval(30*time.Second))),
+			metric.WithInterval(15*time.Second))),
 	)
 	return meterProvider, nil
 }
