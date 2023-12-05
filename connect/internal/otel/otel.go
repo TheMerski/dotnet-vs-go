@@ -6,10 +6,12 @@ import (
 	"time"
 
 	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
+	"go.opentelemetry.io/otel/exporters/prometheus"
 
 	"go.opentelemetry.io/otel/propagation"
+	"go.opentelemetry.io/otel/sdk/instrumentation"
 	"go.opentelemetry.io/otel/sdk/metric"
 	"go.opentelemetry.io/otel/sdk/resource"
 	"go.opentelemetry.io/otel/sdk/trace"
@@ -101,16 +103,34 @@ func newTraceProvider(ctx context.Context, res *resource.Resource) (*trace.Trace
 }
 
 func newMeterProvider(ctx context.Context, res *resource.Resource) (*metric.MeterProvider, error) {
-	metricExporter, err := otlpmetricgrpc.New(ctx, otlpmetricgrpc.WithInsecure())
+	metricExporter, err := prometheus.New()
 	if err != nil {
 		return nil, err
 	}
 
 	meterProvider := metric.NewMeterProvider(
+		metric.WithView(metric.NewView(
+			metric.Instrument{Scope: instrumentation.Scope{Name: "connectrpc.com/otelconnect"}},
+			metric.Stream{
+				AttributeFilter: allowedAttr(
+					"rpc_method",
+					"rpc_grpc_status_code",
+				),
+			},
+		)),
 		metric.WithResource(res),
-		metric.WithReader(metric.NewPeriodicReader(metricExporter,
-			// Default is 1m. Set to 3s for demonstrative purposes.
-			metric.WithInterval(15*time.Second))),
+		metric.WithReader(metricExporter),
 	)
 	return meterProvider, nil
+}
+
+func allowedAttr(v ...string) attribute.Filter {
+	m := make(map[string]struct{}, len(v))
+	for _, s := range v {
+		m[s] = struct{}{}
+	}
+	return func(kv attribute.KeyValue) bool {
+		_, ok := m[string(kv.Key)]
+		return ok
+	}
 }

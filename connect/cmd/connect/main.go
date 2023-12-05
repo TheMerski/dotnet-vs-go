@@ -11,6 +11,7 @@ import (
 	"connectrpc.com/connect"
 	"connectrpc.com/grpcreflect"
 	"connectrpc.com/otelconnect"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/themerski/dotnet-vs-go/connect/internal/gen/generic/v1/genericv1connect"
 	"github.com/themerski/dotnet-vs-go/connect/internal/otel"
 	"github.com/themerski/dotnet-vs-go/connect/internal/service/generic"
@@ -46,6 +47,7 @@ func main() {
 	)
 	mux.Handle(grpcreflect.NewHandlerV1(reflectHandler))
 	mux.Handle(grpcreflect.NewHandlerV1Alpha(reflectHandler))
+	mux.Handle("/metrics", promhttp.Handler())
 
 	slog.Info("Starting server on port 8080")
 
