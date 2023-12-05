@@ -4,11 +4,11 @@
 
 apiVersion: 1
 providers:
-  - name: 'OpenTelemetry Demo'
+  - name: 'OpenTelemetry info'
     orgId: 1
-    folder: 'Demo'
+    folder: 'OTEL'
     type: file
     disableDeletion: false
     editable: true
     options:
-      path: /etc/grafana/provisioning/dashboards/demo
+      path: /etc/grafana/provisioning/dashboards/otel
