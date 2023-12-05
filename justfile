@@ -49,6 +49,13 @@ jeager:
         -p 9411:9411 \
         jaegertracing/all-in-one:1.51
 
+[no-exit-message]
+start-observe:
+    docker compose up --force-recreate --remove-orphans --detach
+
+[no-exit-message]
+stop-observe:
+    docker compose down --remove-orphans --volumes
 
 test-localhost rps=default_rps time=default_time:
     @cd k6; \
