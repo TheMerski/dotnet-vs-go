@@ -17,7 +17,7 @@ receivers:
         - job_name: otel-collector
           scrape_interval: 5s
           static_configs:
-            - targets: [host.docker.internal:8080]
+            - targets: [host.docker.internal:8080, host.docker.internal:8081]
 
 exporters:
   debug:
