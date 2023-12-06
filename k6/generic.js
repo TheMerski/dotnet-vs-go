@@ -37,7 +37,7 @@ export const options = {
       preAllocatedVUs: VU_ALLOCATED,
       stages: [
         { duration: QUARTER_TEST_TIME_S, target: parseInt(__ENV.MAX_RPS / 4, 10) },
-        { duration: QUARTER_TEST_TIME_S, target: parseInt(__ENV.MAX_RPS / 2, 10) },
+        { duration: QUARTER_TEST_TIME_S, target: parseInt(__ENV.MAX_RPS, 10) },
         { duration: QUARTER_TEST_TIME_S, target: parseInt(__ENV.MAX_RPS, 10) },
         { duration: QUARTER_TEST_TIME_S, target: 0 },
       ],
