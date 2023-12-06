@@ -3,12 +3,14 @@ package otel
 import (
 	"context"
 	"errors"
+	"os"
 	"time"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/exporters/prometheus"
+	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/instrumentation"
@@ -88,9 +90,20 @@ func newPropagator() propagation.TextMapPropagator {
 }
 
 func newTraceProvider(ctx context.Context, res *resource.Resource) (*trace.TracerProvider, error) {
-	traceExporter, err := otlptracegrpc.New(ctx, otlptracegrpc.WithInsecure())
-	if err != nil {
-		return nil, err
+	var traceExporter trace.SpanExporter
+	var err error
+
+	// If OTLP endpoint is not set, use stdout exporter.
+	if os.Getenv("OTEL_EXPORTER_OTLP_ENDPOINT") == "" {
+		traceExporter, err = stdouttrace.New(stdouttrace.WithPrettyPrint())
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		traceExporter, err = otlptracegrpc.New(ctx, otlptracegrpc.WithInsecure())
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	traceProvider := trace.NewTracerProvider(
