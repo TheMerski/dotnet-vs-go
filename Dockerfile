@@ -30,3 +30,10 @@ EXPOSE 8080
 EXPOSE 8081
 COPY --from=publish /app/publish .
 ENTRYPOINT ["./server"]
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS release
+WORKDIR /app
+EXPOSE 8080
+EXPOSE 8081
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "./server.dll"]
