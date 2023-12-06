@@ -6,7 +6,7 @@ This project is designed to test the runtime differences between Go and .NET for
 
 To run the gRPC server locally, you can use the [justfile](https://github.com/casey/just) included in this project. The justfile contains commands that simplify the process of starting the server. Here are the steps to run the servers:
 
-1. Start the [OpenTelemetry collector](https://opentelemetry.io/docs/collector/) with `just run-otel-collector`
+1. Start the [OpenTelemetry collector](https://opentelemetry.io/docs/collector/) and other metrics & tracing tools with `just start-observe-services`
 2. Start one of the gRPC servers by running the start command.
    1. For the [connectRPC](https://connectrpc.com/) server use `just run-connect-server` (requires [go](https://go.dev/) to be installed)
    2. For the dotnet server use `just run-dotnet-server` (requires the [.NET SDK](https://dotnet.microsoft.com/en-us/download) to be installed)
@@ -19,6 +19,7 @@ To run the gRPC server locally, you can use the [justfile](https://github.com/ca
     ```bash
     just test-localhost {rps} {time_s}
     ```
+5. You can stop the observation tools with `just stop-observe-services`
 
 ## Contributing
 
