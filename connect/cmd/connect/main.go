@@ -33,11 +33,17 @@ func main() {
 		err = errors.Join(err, otelShutdown(context.Background()))
 	}()
 
+	// Create the connect OpenTelemetry interceptor.
+	otelInterceptor, err := otelconnect.NewInterceptor()
+	if err != nil {
+		slog.Error("Failed to create OpenTelemetry interceptor", "error", err)
+	}
+
 	// Setup the generic service and the handler for the generic API.
 	genericService := generic.NewGenericService()
 	mux := http.NewServeMux()
 	path, handler := genericv1connect.NewGenericServiceHandler(genericService, connect.WithInterceptors(
-		otelconnect.NewInterceptor(),
+		otelInterceptor,
 	))
 	mux.Handle(path, handler)
 
@@ -79,5 +85,4 @@ func main() {
 	// When Shutdown is called, ListenAndServe immediately returns ErrServerClosed.
 	err = srv.Shutdown(context.Background())
 	slog.Info("Server stopped")
-	return
 }
