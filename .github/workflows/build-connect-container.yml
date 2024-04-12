@@ -16,13 +16,12 @@ jobs:
     permissions:
       contents: read
       packages: write
-      # 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: '1.21.x'
-      - uses: ko-build/setup-ko@2788447382c56bf12a5122143c63f3a70c591634
+      - uses: ko-build/setup-ko@ace48d793556083a76f1e3e6068850c1f4a369aa #v0.6
       - run: ko build ./cmd/connect --base-import-paths
         working-directory: ./connect
