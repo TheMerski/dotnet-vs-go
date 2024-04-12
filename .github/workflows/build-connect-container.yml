@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.21.x'
+          go-version: '1.22.x'
       - uses: ko-build/setup-ko@ace48d793556083a76f1e3e6068850c1f4a369aa #v0.6
       - run: ko build ./cmd/connect --base-import-paths
         working-directory: ./connect
