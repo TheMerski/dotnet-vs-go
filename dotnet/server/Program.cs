@@ -6,6 +6,13 @@ using server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Enable otel experimental grpc instrumentation: https://github.com/open-telemetry/opentelemetry-dotnet/blob/main/src/OpenTelemetry.Instrumentation.AspNetCore/README.md#experimental-support-for-grpc-requests
+builder.Configuration.AddInMemoryCollection(
+  new Dictionary<string, string?>
+  {
+    ["OTEL_DOTNET_EXPERIMENTAL_ASPNETCORE_ENABLE_GRPC_INSTRUMENTATION"] = "true",
+  });
+
 var otel = builder.Services.AddOpenTelemetry();
 
 otel.ConfigureResource(resource => resource
