@@ -24,6 +24,6 @@ jobs:
           go-version: '1.22.x'
           cache-dependency-path: ./connect/go.mod
       # use a specific commit of the ko-build/setup-ko action that includes lower casing of docker repo name.
-      - uses: ko-build/setup-ko@f6bcbe6bd48f22c3dc2f08049d856cf0fc719d96 #v0.6 + latest commits as of 2024-04-12
+      - uses: ko-build/setup-ko@6c66175e66923f9ab885351cb71cd382f0e6b431 #v0.6 + latest commits as of 2024-04-12
       - run: ko build ./cmd/connect --base-import-paths
         working-directory: ./connect
